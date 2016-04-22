@@ -1,6 +1,7 @@
 
 app.controller('socketController', ['$scope', 'socket', 'commonData', 'logData',
                     function($scope, socket, commonData, logData) {
+    $scope.usbOn = false;
     $scope.connected = false;
     $scope.commonData = commonData;
     $scope.logData = logData;
@@ -8,7 +9,12 @@ app.controller('socketController', ['$scope', 'socket', 'commonData', 'logData',
     socket.on('connected', function (data) {
         console.log('connected!!', data);
         $scope.connected = true;
-        $scope.projectKey = data.projectKey;
+        $scope.usbOn = data.usbOn;
+    });
+
+    socket.on('status:usb', function (data) {
+        console.log('usbOn?', data.usbOn);
+        $scope.usbOn = data.usbOn;
     });
 
     socket.on('moveStart', function (response) {

@@ -3,10 +3,16 @@
 <head>
     <title>Alf Bot</title>
     <link rel="icon" href="favicon.ico">
+    <!--<link rel="stylesheet"-->
+          <!--href="bower_components/bootstrap/dist/css/bootstrap.min.css">-->
+    <link rel="stylesheet"
+          href="css/main.css">
 </head>
 
 <div ng-controller="socketController">
-    <span>Connected: {{connected}}</span>
+    <span ng-class="{goodText: connected, errorText:!connected}">Socket</span>
+    ||
+    <span ng-class="{goodText: usbOn, errorText:!usbOn}"> USB</span>
 </div>
 
 <div class="row">

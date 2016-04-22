@@ -1,10 +1,13 @@
 
 console.log("@");
 var runner = new Runner();
+
+
 var express = require('express');
 var app = express();
 var fs = require('fs');
-var interpreter = new Interpreter(new Broadcaster(runner));
+var broadcaster = new Broadcaster(runner);
+var interpreter = new Interpreter(broadcaster);
 
 var port = 8030;
 app.use(express.static(__dirname + '/public'));
@@ -32,7 +35,7 @@ io.sockets.on('connection', function (socket) {
     }
 
     // sending a message back to the client
-    socket.emit('connected', {});
+    socket.emit('connected', {usbOn: interpreter.on });
 
     socket.on('send:weight', function(data) {
         interpreter.broadcaster.sendWeight(data.trayNumber, data.weight);
@@ -70,10 +73,18 @@ console.log("@ listening on port" + port);
 //~~~~~~~~~~~~~~~$$$$$$$$$
 //~~~~~~~~~~~~~~~$$$$$$$$$
 //~~~~~~~~~~~~~~~$$$$$$$$$
-runner._run('adb', ['logcat'], interpreter, function(out, error){});
+runner._run('adb', ['devices'], interpreter, function(out, error){
+    if(out.replace("List of devices attached", "").trim() == ""){
+        console.log("No devices connected!! Exiting!");
+        process.exit(1);
+    }
+    runner._run('adb', ['logcat'], interpreter, function(out, error){
+    });
+});
 
 function Broadcaster(runner) {
     this.runner = runner;
+    this.on = false;
     ////adb shell "am broadcast -a blah.blahblah123 --es test 123"
     this.sendWeight = function(trayNumber, weight){
        var filter = "com.cardinalhealth.alfred.patient.firmware.api.FWControllerInterface.WEIGHT_RECEIVED_NOTIFICATION";
@@ -114,17 +125,45 @@ function Interpreter(broadcaster){
     this.PREFIX_LOG = "alfbot_log";
     this.DELIM = "|*|";
     this.on = false;
+    this.disconnected = false;
 
     var self = this;
     setTimeout(function(){
         console.log("ON!");
-        self.on = true;
-        runner.run("open", ["http://localhost:"+port]);
+        self.setOn(true);
     }, 5000);
 
+    setInterval(function(){
+        runner._run('adb', ['devices'], interpreter, function(out, error){
+            if(out.replace("List of devices attached", "").trim() == ""){
+                console.log("No devices connected!!");
+                self.disconnected=true;
+                self.setOn(false);
+            } else if(self.disconnected) {
+                console.log("Connected!!");
+                self.disconnected = false;
+                runner._run('adb', ['logcat'], interpreter, function(out, error){
+                });
+                setTimeout(function(){
+                    console.log("ON!");
+                    self.setOn(true);
+                }, 5000);
+            }
+        });
+    }, 2500);
+
+    this.setOn = function(on) {
+        this.on = on;
+        io.emmitter.emit("status:usb", {usbOn: this.on});
+
+    };
+
     this.onData = function(data) {
+
         if(!this.on)
             return;
+
+
         data = data ? data.toString() : "";
         if(data && data.indexOf(this.PREFIX) != -1){
             this.onCommandLine(data);
