@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="alfbot" xmlns="http://www.w3.org/1999/html">
+<head>
+    <title>Alf Bot</title>
+    <link rel="icon" href="favicon.ico">
+</head>
+
+<div ng-controller="socketController">
+    <span>Connected: {{connected}}</span>
+</div>
+
+<div class="row">
+    <div ng-controller="controlPanel" class="">
+        <button ng-show="!isManualOverride" ng-click="manualOverride(true)">Enable Manual Override</button>
+        <button ng-show="isManualOverride" ng-click="manualOverride(false)">Disable Manual Override</button>
+        <div ng-repeat="P in commonData.pods track by $index">
+            id: {{P.id}}
+            <br>
+            numberOfPills: {{P.numberOfPills}}
+            weight: {{P.getWeight()}}
+            weightPerPill(ATD): {{P.weightPerPill}}
+            <br>
+            <button ng-click="decPills(P.id)">-</button>
+            <button ng-click="incPills(P.id)">+</button>
+            <button ng-show="P.enabled" ng-click="select(P.id)">Select</button>
+            <span ng-show="P.isSelected">SELECTED</span>
+            <div ng-show="commonData.slotIsOpen(P.id)" style="color:green;"> ~~ Open</div>
+            <hr>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div ng-controller="bot" class="">
+        <table>
+            <tr ng-repeat="T in commonData.trays track by $index">
+                {{T.number}}:
+                <td ng-repeat="S in T.slots track by $index" style="width: 400px; height: 50px; background-color:{{S.getColor()}}">
+                    {{S.number}}&nbsp;-&nbsp;{{S.isOpen ? "open" : "closed"}} {{S.pod ? [S.pod.id] : []}}
+                    <button ng-show="S.isOpen && !S.pod" ng-click="placeSelectedPodInSlot(S.number)">Place Pod</button>
+                    <button ng-show="S.isOpen && S.pod" ng-click="S.removePod()">Remove Pod</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<br>
+<br>
+<hr>
+<hr>
+<hr>
+<div class="row">
+    <div ng-controller="logger">
+        <div ng-repeat="L in logData.logs track by $index">{{L}}</div>
+    </div>
+</div>
+
+<script src="bower_components/jquery/dist/jquery.min.js"></script>
+<script src="bower_components/angular/angular.min.js"></script>
+<script src="bower_components/angular-sanitize/angular-sanitize.min.js"></script>
+<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="bower_components/socket.io-client/socket.io.js"></script>
+<script src="/bower_components/highcharts/highcharts.js"></script>
+<script src="js/main.js"></script>
+<script src="js/sock.js"></script>
+</html>
