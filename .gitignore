@@ -1,0 +1,13 @@
+build/
+.idea/
+.gradle/
+alfred-patient-app/.idea
+alfred-lockdowntest/.idea
+local.properties
+.DS_Store
+*.iml
+*.apk
+*.aexlo
+node_modules/
+bower_components/
+
