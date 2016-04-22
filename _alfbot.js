@@ -65,6 +65,7 @@ server.listen(port);
 console.log("@ listening on port" + port);
 
 
+
 //~~~~~~~~~~~~~~~$$$$$$$$$
 //~~~~~~~~~~~~~~~$$$$$$$$$
 //~~~~~~~~~~~~~~~$$$$$$$$$
@@ -118,6 +119,7 @@ function Interpreter(broadcaster){
     setTimeout(function(){
         console.log("ON!");
         self.on = true;
+        runner.run("open", ["http://localhost:"+port]);
     }, 5000);
 
     this.onData = function(data) {

@@ -42,7 +42,7 @@ app.controller('bot', ['$scope', 'commonData', function($scope, commonData) {
             pod.disable();
             $scope.commonData.getSlot(slotNumber).pod = pod;
         } else {
-            alert("No pod selected!");
+            console.log("No pod selected!");
         }
     };
 
@@ -95,8 +95,11 @@ app.factory('commonData', function(){
     data.trays.push(new Tray(2, [new Slot(3), new Slot(4)]));
     data.trays.push(new Tray(1, [new Slot(1), new Slot(2)]));
 
-    data.pods = [new Pod("E0040150735A08FD", 20, 214), new Pod("E0040150735A08FE", 20, 154),
-            new Pod("E0040150735A07D6", 20, 214), new Pod("E004015073590EF7", 10, 214)];
+    data.pods = [
+                new Pod("E0040150735A08FD", "A0000011", 20, 214),
+                new Pod("E0040150735A08FE", "A0000010", 20, 154),
+                new Pod("E0040150735A07D6", "A0000009", 20, 214),
+                new Pod("E004015073590EF7", "A0000008", 10, 214)];
 
     data.slotIsOpen = function(podId) {
         for(var i=0; i<data.trays.length; i++) {
@@ -202,8 +205,9 @@ app.factory('commonData', function(){
 });
 
 
-function Pod(id, numberOfPills, weightPerPill){
+function Pod(id, name, numberOfPills, weightPerPill){
     this.id = id;
+    this.name = name;
     this.weightPerPill = weightPerPill;
     this.podWeight = 20000;
     this.numberOfPills = numberOfPills || 0;
