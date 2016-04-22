@@ -4,7 +4,7 @@
     <title>Alf Bot</title>
     <link rel="icon" href="favicon.ico">
     <!--<link rel="stylesheet"-->
-          <!--href="bower_components/bootstrap/dist/css/bootstrap.min.css">-->
+    <!--href="bower_components/bootstrap/dist/css/bootstrap.min.css">-->
     <link rel="stylesheet"
           href="css/main.css">
 </head>
@@ -16,11 +16,11 @@
 </div>
 
 <div class="row">
-    <div ng-controller="controlPanel" class="">
+    <div ng-controller="controlPanel" class="swimlane">
         <button ng-show="!isManualOverride" ng-click="manualOverride(true)">Enable Manual Override</button>
         <button ng-show="isManualOverride" ng-click="manualOverride(false)">Disable Manual Override</button>
         <div ng-repeat="P in commonData.pods track by $index">
-            <table>
+            <table class="table table-striped">
                 <thead>
                 <td>name</td>
                 <td>id</td>
@@ -48,7 +48,7 @@
     </div>
 </div>
 <div class="row">
-    <div ng-controller="bot" class="">
+    <div ng-controller="bot" class="swimlane">
         <table>
             <tr ng-repeat="T in commonData.trays track by $index">
                 {{T.number}}:
