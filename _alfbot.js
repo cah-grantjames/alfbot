@@ -200,20 +200,22 @@ function Interpreter(broadcaster){
     };
 
     this.sendGetPodId = function(args){
+        var self = this;
         var slotNumber = args[0];
         io.emmitter.emit("sendGetPodId", {slotNumber: slotNumber});
-        console.log("sendGetPodId", slotNumber);
+        self.log("sendGetPodId", slotNumber);
     };
 
     this.sendCloseTray = function(args){
         var self = this;
         var trayNumber = args[0];
         io.emmitter.emit("moveStart", {trayNumber: trayNumber});
+        self.log("startCloseTray", trayNumber);
         setTimeout(function(){
             io.emmitter.emit("moveEnd", {trayNumber: trayNumber});
             io.emmitter.emit("sendCloseTray", {trayNumber: trayNumber});
             self.broadcaster.sendCloseTrayComplete();
-            console.log("sendCloseTray", trayNumber);
+            self.log("sendCloseTray", trayNumber);
         }, 4000);
     };
 
@@ -221,20 +223,26 @@ function Interpreter(broadcaster){
         var self = this;
         var slotNumber = args[0];
         io.emmitter.emit("moveStart", {slotNumber: slotNumber});
+        self.log("startOpenPod", slotNumber);
         setTimeout(function(){
             io.emmitter.emit("moveEnd", {slotNumber: slotNumber});
             io.emmitter.emit("sendOpenPod", {slotNumber: slotNumber});
             self.broadcaster.sendOpenPodComplete();
-            console.log("sendOpenPod", slotNumber);
+            self.log("sendOpenPod", slotNumber);
         }, 4000);
     };
 
     this.sendGetScaleWeight = function(args){
+        var self = this;
         var trayNumber = args[0];
-        console.log("sendGetScaleWeight", trayNumber);
+        self.log("sendGetScaleWeight", trayNumber);
         io.emmitter.emit("sendGetScaleWeight", {trayNumber: trayNumber});
     };
 
+    this.log = function(line, x, y, z){
+        console.log(line, x?x:"", y?y:"", z?z:"");
+        io.emmitter.emit("alflog", {line: ((new Date()+": ")+line + " " + x )});
+    }
     this.CMDS = [ "sendGetPodId", "sendCloseTray", "sendOpenPod", "sendGetScaleWeight"];
 }
 //~~~~~~~~~~~~~~~$$$$$$$$$
