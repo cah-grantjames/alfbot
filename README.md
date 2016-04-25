@@ -1,7 +1,7 @@
 Version 1.2
 
 Quick start:
- - Install nodejs from web download [nodejs.org](nodejs.org)
+ - Install nodejs from web download [nodejs.org](http://nodejs.org)
  - Install Bower via npm
 ```
 sudo npm install -g bower 
