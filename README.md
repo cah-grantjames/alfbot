@@ -17,3 +17,4 @@ cd ../
 node _alfbot
 ```
 
+Open [http://localhost:8030](http://localhost:8030)
