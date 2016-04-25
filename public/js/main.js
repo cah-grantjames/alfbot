@@ -96,10 +96,10 @@ app.factory('commonData', function(){
     data.trays.push(new Tray(1, [new Slot(1), new Slot(2)]));
 
     data.pods = [
-                new Pod("E0040150735A08FD", "A0000011", 20, 214),
-                new Pod("E0040150735A08FE", "A0000010", 20, 154),
-                new Pod("E0040150735A07D6", "A0000009", 20, 214),
-                new Pod("E004015073590EF7", "A0000008", 10, 214)];
+                new Pod("E0040150735A08FD -Ator", "A0000011", 20, 214),
+                new Pod("E0040150735A08FE -MetHyd", "A0000010", 20, 154),
+                new Pod("E004015073590EF7 -New", "A0000009", 20, 214),
+                new Pod("E0040150735A07D6 -Refill", "A0000008", 10, 214)];
 
     data.slotIsOpen = function(podId) {
         for(var i=0; i<data.trays.length; i++) {

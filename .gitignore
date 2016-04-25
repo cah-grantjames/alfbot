@@ -10,4 +10,4 @@ local.properties
 *.aexlo
 node_modules/
 bower_components/
-
+nohup.out
