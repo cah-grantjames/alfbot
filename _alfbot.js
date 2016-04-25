@@ -43,6 +43,9 @@ io.sockets.on('connection', function (socket) {
     socket.on('send:podId', function(data) {
         interpreter.broadcaster.sendPodId(data.podId);
     });
+    socket.on('send:ingressChange', function(data) {
+        interpreter.broadcaster.sendIngress(data.ingressBool);
+    });
 
     if(app.update) {
         app.update.onConnectedSocket(socket);
@@ -114,6 +117,16 @@ function Broadcaster(runner) {
        var filter = "com.cardinalhealth.alfred.patient.firmware.api.FWControllerInterface.TRAY_CLOSED_NOTIFICATION";
        this.runner.run("adb",
                ["shell", "am","broadcast","-a",filter],
+           function(out, err){
+           });
+    };
+
+    this.sendIngress = function(ingressBool){
+       console.log("sendIngress", ingressBool);
+       var filter = "com.cardinalhealth.alfred.patient.firmware.api.FWControllerInterface.MANUAL_OVERRIDE_CHANGE_NOTIFICATION";
+       var extraKey = "com.cardinalhealth.alfred.patient.firmware.api.FWControllerInterface.MANUAL_OVERRIDE_IS_ON";
+       this.runner.run("adb",
+               ["shell", "am","broadcast","-a",filter,"--ez",extraKey,ingressBool],
            function(out, err){
            });
     };
@@ -260,7 +273,7 @@ function Runner() {
 				cmd = "start";
 			}
 		}
-        //console.log("RUNNING ", "[", cmd,  cmdArgs.join(" "), "]");
+        console.log("RUNNING ", "[", cmd,  cmdArgs.join(" "), "]");
         var spawn = require('child_process').spawn,
         ls = spawn(cmd, cmdArgs);
         var out = "";

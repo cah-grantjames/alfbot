@@ -4,6 +4,13 @@ app.controller('socketController', ['$scope', 'socket', 'commonData', 'logData',
     $scope.usbOn = false;
     $scope.connected = false;
     $scope.commonData = commonData;
+    $scope.commonData.ingressChangeListener = {
+        onChange : function(ingressBool) {
+            socket.emit('send:ingressChange', {
+                ingressBool : ingressBool
+            }, function (result) {});
+        }
+    };
     $scope.logData = logData;
 
     socket.on('connected', function (data) {

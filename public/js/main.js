@@ -62,6 +62,7 @@ app.controller('controlPanel', ['$scope', 'commonData', function($scope, commonD
     };
     $scope.manualOverride = function(on){
         $scope.isManualOverride = on;
+        commonData.onIngressChange(on);
         if(on){
             commonData.openAllSlots();
         } else {
@@ -87,6 +88,7 @@ app.factory('logData', function(){
 });
 app.factory('commonData', function(){
     var data = {};
+    data.ingressChangeListener = null;
     data.trays = [];
     data.trays.push(new Tray(6, [new Slot(11), new Slot(12)]));
     data.trays.push(new Tray(5, [new Slot(9), new Slot(10)]));
@@ -99,7 +101,13 @@ app.factory('commonData', function(){
                 new Pod("E0040150735A08FD", "A0000011 -Ator", 20, 214),
                 new Pod("E0040150735A08FE", "A0000010 -MetHyd", 20, 154),
                 new Pod("E004015073590EF7", "A0000009 -RefillAtor", 10, 214),
-                new Pod("E0040150735A07D6", "A0000008 -New", 20, 204)];
+                new Pod("E0040150735A07D6", "A0000008 -New", 20, 2)];
+
+    data.onIngressChange = function(ingressBool){
+        if(data.ingressChangeListener) {
+            data.ingressChangeListener.onChange(ingressBool);
+        }
+    };
 
     data.slotIsOpen = function(podId) {
         for(var i=0; i<data.trays.length; i++) {
