@@ -2,6 +2,7 @@
 body {
     background:#333;
     color:#fff;
+    background-image: url("../images/plasma.gif");
 }
 
 
@@ -137,11 +138,10 @@ div {
 .author {
     color : #7EE6A5;
 }
-
 .swimlane {
-    background : rgba(255,255,255, .8);
+    background : rgba(255,255,255, 1);
     color:#000;
-    width: 95%;
+    display: inline-block;
     margin: auto;
     height:100%;
     border-radius: 4px;
