@@ -273,7 +273,7 @@ function Runner() {
 				cmd = "start";
 			}
 		}
-        console.log("RUNNING ", "[", cmd,  cmdArgs.join(" "), "]");
+        //console.log("RUNNING ", "[", cmd,  cmdArgs.join(" "), "]");
         var spawn = require('child_process').spawn,
         ls = spawn(cmd, cmdArgs);
         var out = "";
