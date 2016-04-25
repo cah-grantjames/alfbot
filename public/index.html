@@ -8,14 +8,14 @@
     <link rel="stylesheet"
           href="css/main.css">
 </head>
-
-<div ng-controller="socketController">
+<div ng-controller="socketController" class="swimlane">
     <span ng-class="{goodText: connected, errorText:!connected}">Socket</span>
     ||
     <span ng-class="{goodText: usbOn, errorText:!usbOn}"> USB</span>
 </div>
 
 <div class="row">
+
     <div ng-controller="controlPanel" class="swimlane">
         <button ng-show="!isManualOverride" ng-click="manualOverride(true)">Enable Manual Override</button>
         <button ng-show="isManualOverride" ng-click="manualOverride(false)">Disable Manual Override</button>
@@ -50,10 +50,13 @@
             <hr>
         </div>
     </div>
+
     <div ng-controller="bot" class="swimlane">
         <table>
             <tr ng-repeat="T in commonData.trays track by $index">
-                <td style="width: 100px; height: 50px; background-color:#000; color:#fff">Tray {{T.number}} {{T.getWeight()}}</td>
+                <td style="width: 100px; height: 50px; background-color:#000; color:#fff">Tray {{T.number}}
+                    {{T.getWeight()}}
+                </td>
                 <td ng-repeat="S in T.slots track by $index"
                     style="width: 400px; height: 50px; background-color:{{S.getColor()}}">
                     {{S.number}}&nbsp;-&nbsp;{{S.isOpen ? "open" : "closed"}} {{S.pod ? [S.pod.id] : []}}
@@ -65,7 +68,7 @@
     </div>
 </div>
 <div class="row">
-    <div ng-controller="logger">
+    <div ng-controller="logger" class="swimlane">
         <div ng-repeat="L in logData.logs track by $index">{{L}}</div>
     </div>
 </div>
