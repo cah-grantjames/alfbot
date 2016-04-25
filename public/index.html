@@ -20,14 +20,17 @@
         <button ng-show="!isManualOverride" ng-click="manualOverride(true)">Enable Manual Override</button>
         <button ng-show="isManualOverride" ng-click="manualOverride(false)">Disable Manual Override</button>
         <div ng-repeat="P in commonData.pods track by $index">
-            <table class="table table-striped">
+            <table class="table table-striped glimr-table">
                 <thead>
-                <td>name</td>
-                <td>id</td>
-                <td>numberOfPills</td>
-                <td>weight</td>
-                <td>weightPerPill(ATD)</td>
+                <tr>
+                    <td style="width:150px">Name</td>
+                    <td style="width:150px">Id</td>
+                    <td style="width:150px">NumberOfPills</td>
+                    <td style="width:150px">Weight</td>
+                    <td style="width:150px">WeightPerPill(ATD)</td>
+                </tr>
                 </thead>
+                <tbody>
                 <tr ng-show="commonData.slotIsOpen(P.id)" style="background-color:#AFA;">
                     <td colspan="5">~~ Open</td>
                 </tr>
@@ -38,6 +41,7 @@
                     <td>{{P.getWeight()}}</td>
                     <td>{{P.weightPerPill}}</td>
                 </tr>
+                </tbody>
             </table>
             <button ng-click="decPills(P.id)">-</button>
             <button ng-click="incPills(P.id)">+</button>
