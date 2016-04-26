@@ -138,6 +138,7 @@ app.factory('commonData', function(){
             };
             metaPod.weightPerPill = (metaPod.initialFilledWeight - metaPod.emptyWeight) / metaPod.emptyWeight;
             metaPod.weightPerPill = metaPod.weightPerPill * self.POD_WEIGHT / metaPod.qtyDispensed;
+            metaPod.weightPerPill = Math.round(metaPod.weightPerPill);
             self.pods.push(new Pod(metaPod.id, metaPod.name, metaPod.qtyDispensed, metaPod.weightPerPill, data.POD_WEIGHT, true));
         }
     }
