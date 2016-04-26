@@ -72,6 +72,10 @@ app.controller('socketController', ['$scope', 'socket', 'commonData', 'logData',
     socket.on('alflog', function (response) {
         $scope.logData.log(response.line);
     });
+
+    socket.on('alfinfo', function (response) {
+        $scope.commonData.onInfo(response.info);
+    });
 }]);
 
 app.factory('socket', function ($rootScope) {

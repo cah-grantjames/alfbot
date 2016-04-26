@@ -87,7 +87,7 @@ app.factory('logData', function(){
     return logData;
 });
 app.factory('commonData', function(){
-    var data = {};
+    var data = { DELIM:"|*|", POD_WEIGHT:20000};
     data.ingressChangeListener = null;
     data.trays = [];
     data.trays.push(new Tray(6, [new Slot(11), new Slot(12)]));
@@ -98,14 +98,10 @@ app.factory('commonData', function(){
     data.trays.push(new Tray(1, [new Slot(1), new Slot(2)]));
 
     data.defaultPods = [
-                new Pod("E0040150735A08FD", "A0000011 -Ator", 20, 214),
-                new Pod("E0040150735A08FE", "A0000010 -MetHyd", 20, 154),
-                new Pod("E004015073590EF7", "A0000009 -RefillAtor", 10, 214),
-                new Pod("E0040150735A07D6", "A0000008 -New", 20, 2),
-                new Pod("?", "apixaban", 30, 100),
-                new Pod("?", "Lisinoril", 30, 100),
-                new Pod("?", "Metformin", 60, 100),
-                new Pod("?", "simvastatin", 30, 100)
+                new Pod("E0040150735A08FD", "A0000011 -Ator", 20, 214, data.POD_WEIGHT),
+                new Pod("E0040150735A08FE", "A0000010 -MetHyd", 20, 154, data.POD_WEIGHT),
+                new Pod("E004015073590EF7", "A0000009 -RefillAtor", 10, 214, data.POD_WEIGHT),
+                new Pod("E0040150735A07D6", "A0000008 -New", 20, 204, data.POD_WEIGHT),
                 ];
 
     data.removePod = function(pod){
@@ -128,6 +124,24 @@ app.factory('commonData', function(){
         }
     };
 
+    //
+    data.onInfo = function(info){
+        var self = this;
+        var infoArray = info.split(self.DELIM);
+        if(infoArray.length >=7 && infoArray[1] == "pod"){
+            var metaPod = {
+                 id : infoArray[2],
+                 name : infoArray[3],
+                 emptyWeight : infoArray[4],
+                 initialFilledWeight : infoArray[5],
+                 qtyDispensed : infoArray[6]
+            };
+            metaPod.weightPerPill = (metaPod.initialFilledWeight - metaPod.emptyWeight) / emptyWeight;
+            metaPod.weightPerPill = metaPod.weightPerPill * self.POD_WEIGHT / metaPod.qtyDispensed;
+            self.pods.push(new Pod(metaPod.id, metaPod.name, metaPod.qtyDispensed, metaPod.weightPerPill, data.POD_WEIGHT));
+        }
+    }
+    //
     data.onIngressChange = function(ingressBool){
         if(data.ingressChangeListener) {
             data.ingressChangeListener.onChange(ingressBool);
@@ -238,11 +252,11 @@ app.factory('commonData', function(){
 });
 
 
-function Pod(id, name, numberOfPills, weightPerPill){
+function Pod(id, name, numberOfPills, weightPerPill, podWeight){
     this.id = id;
     this.name = name;
     this.weightPerPill = weightPerPill;
-    this.podWeight = 20000;
+    this.podWeight = podWeight || 20000;
     this.numberOfPills = numberOfPills || 0;
     this.enabled = true;
 

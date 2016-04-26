@@ -135,6 +135,7 @@ function Broadcaster(runner) {
 function Interpreter(broadcaster){
     this.broadcaster = broadcaster;
     this.PREFIX = "alfbot_cmd";
+    this.PREFIX_INFO = "alfbot_info";
     this.PREFIX_LOG = "alfbot_log";
     this.DELIM = "|*|";
     this.on = false;
@@ -178,11 +179,14 @@ function Interpreter(broadcaster){
 
 
         data = data ? data.toString() : "";
-        if(data && data.indexOf(this.PREFIX) != -1){
+        if(data.indexOf(this.PREFIX) != -1){
             this.onCommandLine(data);
-        } else if(data && data.indexOf(this.PREFIX_LOG) != -1) {
+        } else if(data.indexOf(this.PREFIX_LOG) != -1) {
             console.log("\t$$$", data);
             io.emmitter.emit("alflog", {line: data});
+        } else if(data.indexOf(this.PREFIX_INFO) != -1) {
+            console.log("\tiii", data);
+            io.emmitter.emit("alfinfo", {info: data});
         }
 //        io.emmitter.emit("logcat", {line: data});
     };
