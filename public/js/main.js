@@ -138,7 +138,7 @@ app.factory('commonData', function(){
             };
             metaPod.weightPerPill = (metaPod.initialFilledWeight - metaPod.emptyWeight) / metaPod.emptyWeight;
             metaPod.weightPerPill = metaPod.weightPerPill * self.POD_WEIGHT / metaPod.qtyDispensed;
-            self.pods.push(new Pod(metaPod.id, metaPod.name, metaPod.qtyDispensed, metaPod.weightPerPill, data.POD_WEIGHT));
+            self.pods.push(new Pod(metaPod.id, metaPod.name, metaPod.qtyDispensed, metaPod.weightPerPill, data.POD_WEIGHT, true));
         }
     }
     //
@@ -252,13 +252,14 @@ app.factory('commonData', function(){
 });
 
 
-function Pod(id, name, numberOfPills, weightPerPill, podWeight){
+function Pod(id, name, numberOfPills, weightPerPill, podWeight, real){
     this.id = id;
     this.name = name;
     this.weightPerPill = weightPerPill;
     this.podWeight = podWeight || 20000;
     this.numberOfPills = numberOfPills || 0;
     this.enabled = true;
+    this.real = real || false;
 
     this.getWeight = function() {
         var w = this.numberOfPills * this.weightPerPill;

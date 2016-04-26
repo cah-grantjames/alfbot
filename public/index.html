@@ -25,7 +25,7 @@
         <div ng-repeat="P in commonData.pods track by $index">
             <table class="table table-striped glimr-table">
                 <thead>
-                <tr>
+                <tr ng-class="{goodText: P.real, errorText: !P.real}">
                     <td style="width:150px">Name</td>
                     <td style="width:150px">Id</td>
                     <td style="width:150px">NumberOfPills</td>
