@@ -101,7 +101,11 @@ app.factory('commonData', function(){
                 new Pod("E0040150735A08FD", "A0000011 -Ator", 20, 214),
                 new Pod("E0040150735A08FE", "A0000010 -MetHyd", 20, 154),
                 new Pod("E004015073590EF7", "A0000009 -RefillAtor", 10, 214),
-                new Pod("E0040150735A07D6", "A0000008 -New", 20, 204)];
+                new Pod("?", "apixaban", 30, 100),
+                new Pod("?", "Lisinoril", 30, 100),
+                new Pod("?", "Metformin", 60, 100),
+                new Pod("?", "simvastatin", 30, 100)
+                ];
 
     data.removePod = function(pod){
         for(var i=0; i<data.pods.length; i++){
