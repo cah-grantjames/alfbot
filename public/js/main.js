@@ -97,11 +97,31 @@ app.factory('commonData', function(){
     data.trays.push(new Tray(2, [new Slot(3), new Slot(4)]));
     data.trays.push(new Tray(1, [new Slot(1), new Slot(2)]));
 
-    data.pods = [
+    data.defaultPods = [
                 new Pod("E0040150735A08FD", "A0000011 -Ator", 20, 214),
                 new Pod("E0040150735A08FE", "A0000010 -MetHyd", 20, 154),
                 new Pod("E004015073590EF7", "A0000009 -RefillAtor", 10, 214),
-                new Pod("E0040150735A07D6", "A0000008 -New", 20, 2)];
+                new Pod("E0040150735A07D6", "A0000008 -New", 20, 204)];
+
+    data.removePod = function(pod){
+        for(var i=0; i<data.pods.length; i++){
+            if(pod == data.pods[i]) {
+                data.pods.splice(i, 1);
+                break;
+            }
+        }
+    };
+
+    data.createPod = function(){
+        data.pods.push(new Pod("", "", 10, 100));
+    };
+
+    data.resetPods = function(){
+        data.pods = [];
+        for(var i=0; i<data.defaultPods.length; i++){
+            data.pods.push(new Pod(data.defaultPods[i].id, data.defaultPods[i].name, data.defaultPods[i].numberOfPills, data.defaultPods[i].weightPerPill));
+        }
+    };
 
     data.onIngressChange = function(ingressBool){
         if(data.ingressChangeListener) {
@@ -208,7 +228,7 @@ app.factory('commonData', function(){
             }
         }
     };
-
+    data.resetPods();
     return data;
 });
 

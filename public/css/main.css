@@ -9,6 +9,10 @@ div {
     border-radius: 9px;
 }
 
+button {
+    margin: 5px;
+}
+
 .commentHeading {
     font-weight: bold;
     color: #E88;

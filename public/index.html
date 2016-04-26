@@ -19,6 +19,9 @@
     <div ng-controller="controlPanel" class="swimlane">
         <button ng-show="!isManualOverride" ng-click="manualOverride(true)">Enable Manual Override</button>
         <button ng-show="isManualOverride" ng-click="manualOverride(false)">Disable Manual Override</button>
+        <button ng-click="commonData.createPod()">Create Pod</button>
+        <button ng-click="commonData.resetPods()">Reset Pods</button>
+
         <div ng-repeat="P in commonData.pods track by $index">
             <table class="table table-striped glimr-table">
                 <thead>
@@ -32,7 +35,7 @@
                 </thead>
                 <tbody>
                 <tr ng-show="commonData.slotIsOpen(P.id)" style="background-color:#AFA;">
-                    <td colspan="5">~~ Open</td>
+                    <td colspan="6">~~ Open</td>
                 </tr>
                 <tr>
                     <td style="background-color:#000; color:white"><input type="text" ng-model="P.name"/></td>
@@ -40,9 +43,11 @@
                     <td><input type="text" ng-model="P.numberOfPills"/></td>
                     <td>{{P.getWeight()}}</td>
                     <td><input type="text" ng-model="P.weightPerPill"/></td>
+                    <td><button ng-click="commonData.removePod(P)">Delete</button></td>
                 </tr>
                 </tbody>
             </table>
+
             <button ng-click="decPills(P.id)">-</button>
             <button ng-click="incPills(P.id)">+</button>
             <button ng-show="P.enabled" ng-click="select(P.id)">Select</button>
